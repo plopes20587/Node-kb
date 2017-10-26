@@ -12,7 +12,7 @@ db.once('open', function(){
 });
 
 // Check for DB errors
-db.on('error', function(){
+db.on('error', function(err){
   console.log(err);
 });
 
