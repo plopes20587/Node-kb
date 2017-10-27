@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 
 // Bring in user module
@@ -63,6 +64,22 @@ router.post('/register', function(req, res) {
 // Login form
 router.get('/login', function(req,res) {
   res.render('login');
+});
+
+// Login proccess
+router.post('/login', function(req, res, next){
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+    failureFlash: true
+  })(req, res,next);
+});
+
+// Logout
+router.get('/logout', function(req,res){
+  req.logout();
+  req.flash('success', 'You are logged out');
+  res.redirect('users/login');
 });
 
 module.exports = router;
