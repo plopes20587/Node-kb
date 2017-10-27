@@ -3,17 +3,16 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
-
-// Bring in user module
+// Bring in User Model
 let User = require('../models/user');
 
-// Register form
+// Register Form
 router.get('/register', function(req, res){
   res.render('register');
 });
 
-// Register proccess
-router.post('/register', function(req, res) {
+// Register Proccess
+router.post('/register', function(req, res){
   const name = req.body.name;
   const email = req.body.email;
   const username = req.body.username;
@@ -29,7 +28,7 @@ router.post('/register', function(req, res) {
 
   let errors = req.validationErrors();
 
-  if(errors) {
+  if(errors){
     res.render('register', {
       errors:errors
     });
@@ -43,16 +42,16 @@ router.post('/register', function(req, res) {
 
     bcrypt.genSalt(10, function(err, salt){
       bcrypt.hash(newUser.password, salt, function(err, hash){
-        if (err) {
+        if(err){
           console.log(err);
         }
         newUser.password = hash;
         newUser.save(function(err){
-          if (err) {
+          if(err){
             console.log(err);
             return;
           } else {
-            req.flash('success', 'You are now registered');
+            req.flash('success','You are now registered and can log in');
             res.redirect('/users/login');
           }
         });
@@ -61,25 +60,25 @@ router.post('/register', function(req, res) {
   }
 });
 
-// Login form
-router.get('/login', function(req,res) {
+// Login Form
+router.get('/login', function(req, res){
   res.render('login');
 });
 
-// Login proccess
+// Login Process
 router.post('/login', function(req, res, next){
   passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/users/login',
+    successRedirect:'/',
+    failureRedirect:'/users/login',
     failureFlash: true
-  })(req, res,next);
+  })(req, res, next);
 });
 
-// Logout
-router.get('/logout', function(req,res){
+// logout
+router.get('/logout', function(req, res){
   req.logout();
   req.flash('success', 'You are logged out');
-  res.redirect('users/login');
+  res.redirect('/users/login');
 });
 
 module.exports = router;
