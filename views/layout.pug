@@ -18,10 +18,14 @@ html
           ul.nav.navbar-nav
             li
               a(href='/') Home
-            li
+            li 
               a(href='/articles/add') Add Article
         // /.nav-collapse
     .container
+      != messages('message', locals)
+      if errors 
+        each error, i in errors 
+          div(class="alert alert-danger") #{error.msg}
       block content
       br
       hr
