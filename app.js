@@ -6,9 +6,6 @@ const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
 
-// Bring in models
-let Article = require('./models/article');
-
 mongoose.connect('mongodb://localhost/nodekb');
 let db = mongoose.connection;
 
@@ -24,6 +21,9 @@ db.on('error', function(err){
 
 // Init App
 const app = express();
+
+// Bring in models
+let Article = require('./models/article');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -86,7 +86,9 @@ app.get('/', function(req,res) {
 
 // Route Files
 let articles = require('./routes/articles');
+let users = require('./routes/users');
 app.use('/articles', articles);
+app.use('/users', users);
 
 // Start server
 app.listen(3000, function () {
